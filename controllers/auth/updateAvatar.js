@@ -8,7 +8,7 @@ const avatarsDir = path.join(__dirname, "../../", "public", "avatars");
 
 const updateAvatar = async (req, res) => {
   const { _id } = req.user;
-  const { path: tempUpload, originalname } = req.file;
+  const { path: tmpUpload, originalname } = req.file;
   const filename = `${_id}_${originalname}`;
   const resultUpload = path.join(avatarsDir, filename);
 
@@ -20,7 +20,7 @@ const updateAvatar = async (req, res) => {
     HttpError(500, "Avatar resizing error");
   }
 
-  await fs.rename(tempUpload, resultUpload);
+  await fs.rename(tmpUpload, resultUpload);
   const avatarURL = path.join("avatars", filename);
   await User.findByIdAndUpdate(_id, { avatarURL });
   res.json({
